@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COCO</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #8B6A5B;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+      .container {
+            text-align: center;
+            color: white;
+            width: 80%;
+            max-width: 800px;
+            display: flex;
+            flex-direction: row;
+        }
+      .login-box,.chat-container,.connectes-box {
+            background-color: #9C7E6A;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+      .login-box input[type="text"],.login-box input[type="number"] {
+            width: 200px;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+        }
+      .login-box input[type="radio"] {
+            margin: 10px;
+        }
+      .login-box label {
+            margin-right: 20px;
+        }
+      .login-box.submit {
+            background-color: #FFD700;
+            color: black;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+      .chat-rooms-box {
+            background-color: #D3D3D3;
+            padding: 10px;
+            border-radius: 10px;
+            margin-top: 20px;
+            width: 100%;
+        }
+      .chat-rooms-box ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+      .chat-rooms-box ul li {
+            padding: 8px;
+            background-color: #B3A0C4;
+            margin-bottom: 5px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+      .chat-rooms-box h2 {
+            font-size: 18px;
+            color: #333;
+            margin-top: 0;
+        }
+      .chat-container {
+            display: none;
+            flex-direction: column;
+            height: 70vh;
+            padding: 10px;
+            margin-top: 20px;
+            width: 100%;
+        }
+      .chat-box {
+            flex: 1;
+            border: 1px solid #ccc;
+            overflow-y: auto;
+            padding: 10px;
+            background-color: #D3D3D3;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+      .input-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+      .input-box textarea {
+            flex: 1;
+            max-width: 70%;
+            height: 30px;
+            padding: 5px;
+            border: none;
+            border-radius: 5px;
+            resize: none;
+        }
+      .input-box button {
+            background-color: #FFD700;
+            color: black;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+      .message {
+            margin-bottom: 10px;
+            padding: 5px 10px;
+            background-color: #D3D3D3;
+            border-radius: 5px;
+            word-wrap: break-word;
+        }
+      .connectes-box {
+            background-color: #D3D3D3;
+            color: black;
+            padding: 10px;
+            border-radius: 10px;
+            margin-top: 20px;
+            width: 200px;
+            display: none;
+        }
+      .connectes-box ul {
+            list-style-type: none;
+            padding: 8px;
+            margin-bottom: 5px;
+            background-color: #B3A0C4;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+      .connectes-box ul li {
+            padding: 8px;
+            background-color: #B3A0C4;
+            margin-bottom: 5px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+      .connectes-box-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+      .close-button {
+            color: green; /* Change la couleur de la croix en vert */
+        }
+      .age-highlight {
+            color: inherit; /* Le texte sera noir par défaut */
+        }
+      .male-age {
+            color: blue; /* L'âge des garçons sera en bleu */
+        }
+      .female-age {
+            color: pink; /* L'âge des filles sera en rose */
+        }
+      .info-link {
+              color: black; /* La couleur de l'étoile */
+              text-decoration: none; /* Supprime le soulignement */
+          }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="login-box" id="loginBox">
+        <form id="loginForm">
+            <input type="text" id="pseudo" name="pseudo" placeholder="Pseudo" required><br>
+            <label><input type="radio" name="gender" value="homme" required> Homme</label>
+            <label><input type="radio" name="gender" value="femme"> Femme</label><br>
+            <input type="number" id="age" name="age" placeholder="Âge" required min="1"><br>
+            <button type="submit" class="submit">Entrée</button>
+        </form>
+    </div>
+    <div class="chat-rooms-box" id="chatRoomsBox">
+        <h2>Salons publics</h2>
+        <ul>
+            <li onclick="enterChatRoom('Accueil')">Accueil</li>
+            <li onclick="enterChatRoom('Gaming')">Gaming</li>
+            <li onclick="enterChatRoom('Quiz')">Quiz</li>
+        </ul>
+    </div>
+    <div class="chat-container" id="chatContainer">
+        <div class="chat-box" id="chatBox"></div>
+        <div class="input-box" id="inputBox">
+            <textarea id="messageInput" placeholder="Écrivez votre message..." rows="1"></textarea>
+            <button type="button" onclick="sendMessage()">Envoyer</button>
+        </div>
+    </div>
+    <div class="connectes-box" id="connectesBox">
+        <div class="connectes-box-header">
+            <h2>Connectés</h2>
+            <button class="close-button" onclick="retourSalons()">X</button> <!-- Ajout de la classe close-button ici -->
+        </div>
+        <ul id="usersList"></ul>
+    </div>
+</div>
+
+<script>
+    let pseudoUtilisateur = '';
+    let usersConnected = [];
+
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const pseudo = document.getElementById('pseudo').value;
+        const age = document.getElementById('age').value;
+        const genre = document.querySelector('input[name="gender"]:checked');
+        if (pseudo && age && genre) {
+            pseudoUtilisateur = pseudo;
+            addUserToRoom(pseudo, age, genre.value);
+            document.getElementById('loginBox').style.display = 'none';
+            document.getElementById('chatRoomsBox').style.display = 'block';
+        } else {
+            alert('Veuillez remplir tous les champs requis.');
+        }
+    });
+
+    function enterChatRoom(roomName) {
+        document.getElementById('chatRoomsBox').style.display = 'none';
+        document.getElementById('chatContainer').style.display = 'flex';
+        document.getElementById('chatBox').innerHTML = '<h3>' + roomName + '</h3>';
+        document.getElementById('inputBox').style.display = 'flex';
+        document.getElementById('connectesBox').style.display = 'block';
+        addUserToRoom(pseudoUtilisateur, document.getElementById('age').value, genre.value);
+    }
+
+    function retourSalons() {
+        document.getElementById('chatContainer').style.display = 'none';
+        document.getElementById('connectesBox').style.display = 'none';
+        document.getElementById('chatRoomsBox').style.display = 'block';
+        removeUserFromRoom(pseudoUtilisateur);
+    }
+
+    function addUserToRoom(pseudo, age, gender) {
+        if (!usersConnected.some(user => user.pseudo === pseudo)) {
+            usersConnected.push({pseudo: pseudo, age: age, gender: gender});
+            updateUsersDisplay();
+        }
+    }
+
+    function removeUserFromRoom(pseudo) {
+        const index = usersConnected.findIndex(user => user.pseudo === pseudo);
+        if (index!== -1) {
+            usersConnected.splice(index, 1);
+            updateUsersDisplay();
+        }
+    }
+
+    function updateUsersDisplay() {
+        const userList = document.getElementById('usersList');
+        userList.innerHTML = '';
+        usersConnected.forEach(user => {
+            const listItem = document.createElement('li');
+            listItem.textContent = `${user.pseudo}`;
+            if (user.age) {
+                listItem.innerHTML += `<span class="age-highlight ${user.gender === 'homme'? 'male-age' : 'female-age'}"> (${user.age})</span> <a href="#" class="info-link">★</a>`;
+            }
+            userList.appendChild(listItem);
+        });
+    }
+
+    function showUserInfo(e) {
+        e.preventDefault();
+        const link = e.target;
+        const userInfo = `Pseudo: ${link.closest('li').textContent.split('(')[0].trim()}<br>Age: ${link.closest('li').textContent.split('(')[1].split(')')[0].trim()}<br>Temps de connexion: 5 minutes`;
+        const newWindow = window.open('', '_blank');
+        newWindow.document.write(`<p>${userInfo}</p>`);
+    }
+
+    document.querySelectorAll('.info-link').forEach(link => {
+        link.addEventListener('click', showUserInfo);
+    });
+
+    function sendMessage() {
+        const messageInput = document.getElementById('messageInput');
+        const messageText = messageInput.value;
+        if (messageText.trim()) {
+            const chatBox = document.getElementById('chatBox');
+            const newMessage = document.createElement('div');
+            newMessage.className ='message';
+            newMessage.textContent = messageText;
+            chatBox.appendChild(newMessage);
+            messageInput.value = ''; // Effacer le champ de texte après l'envoi du message
+        }
+    }
+
+    window.onload = function() {
+        document.getElementById('loginBox').style.display = 'block';
+        document.getElementById('chatRoomsBox').style.display = 'none';
+        document.getElementById('chatContainer').style.display = 'none';
+        document.getElementById('connectesBox').style.display = 'none';
+    }
+</script>
+</body>
+</html>
